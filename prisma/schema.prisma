@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  restaurant_id          String       @id @default(uuid()) @map("restaurant_id")
+  restaurant_name        String       @unique
+  restaurant_address     String
+  restaurant_city        String
+  restaurant_email       String       @unique
+  restaurant_phone       String       @unique
+  restaurant_employees   Employee[]
+  restaurant_meals       Meal[]
+  restaurant_categories  Category[]
+  restaurant_newsletters Newsletter[]
+}
+
+model Employee {
+  employeeId   String     @id @default(uuid()) @map("employee_id")
+  name         String
+  position     String
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
+}
+
+model Meal {
+  mealId       String      @id @default(uuid()) @map("meal_id")
+  name         String
+  description  String?
+  price        Float
+  categoryId   String
+  category     Category    @relation(fields: [categoryId], references: [categoryId])
+  restaurantId String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [restaurant_id])
+}
+
+model Category {
+  categoryId   String     @id @default(uuid()) @map("category_id")
+  name         String
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
+  Meal         Meal[]
+}
+
+model Newsletter {
+  newsletterId String     @id @default(uuid()) @map("newsletter_id")
+  email        String     @unique
+  subscribedAt DateTime   @default(now())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
+}
