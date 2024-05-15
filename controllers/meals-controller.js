@@ -13,6 +13,10 @@ const showAllTheMelas = async (req, res) => {
   return meals;
 };
 
+const showTheAddMealForm = async (req, res) => {
+  res.render("addNewMeal", { categories: ["hi", "how are you"] });
+};
+
 const addNewMeal = async (req, res) => {
   try {
     const { Name, Description, Price, Image, CategoryID, RestaurantID } =
@@ -28,7 +32,7 @@ const addNewMeal = async (req, res) => {
       },
     });
     console.log("the restorent was added :", NewMeal);
-    res.status(201).json(NewMeal);
+    res.res.status(201).json(NewMeal);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong" });
@@ -45,4 +49,4 @@ main()
     process.exit(1);
   });
 
-module.exports = { showAllTheMelas, addNewMeal };
+module.exports = { showAllTheMelas, addNewMeal, showTheAddMealForm };

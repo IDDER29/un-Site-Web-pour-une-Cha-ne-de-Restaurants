@@ -9,7 +9,6 @@ async function main() {
 const renderTheHomePage = async (req, res) => {
   const meals = await showAllTheMelas();
   const Chefs = await showAllTheChefs();
-  console.log(meals);
   await res.render("index", { meals, Chefs });
 };
 

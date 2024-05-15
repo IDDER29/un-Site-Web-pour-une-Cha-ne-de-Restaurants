@@ -3,9 +3,10 @@ const addNewMealRouter = express.Router();
 const {
   showAllTheMelas,
   addNewMeal,
+  showTheAddMealForm,
 } = require("../controllers/meals-controller");
 
-addNewMealRouter.get("/", showAllTheMelas);
+addNewMealRouter.get("/", showTheAddMealForm);
 
 addNewMealRouter.post("/add", addNewMeal);
 
