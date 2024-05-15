@@ -2,6 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { showAllTheMelas, addNewMeal } = require("./meals-controller");
 const { showAllTheChefs } = require("./employee-controler");
+const {
+  showAllTheRestorents,
+  addNewRestaurant,
+} = require("./restaurants-controler");
 async function main() {
   // Render templates
 }
@@ -9,7 +13,9 @@ async function main() {
 const renderTheHomePage = async (req, res) => {
   const meals = await showAllTheMelas();
   const Chefs = await showAllTheChefs();
-  await res.render("index", { meals, Chefs });
+  const restaurants = await showAllTheRestorents();
+  const restaurant = restaurants[0];
+  await res.render("index", { meals, Chefs, restaurant });
 };
 
 main()

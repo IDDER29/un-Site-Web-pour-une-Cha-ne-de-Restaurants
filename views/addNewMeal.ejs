@@ -53,44 +53,53 @@
             <h1 class="display-5 text-center text-primary mb-5">
               Add New Meal
             </h1>
-            <form action="/addNewMeal" method="POST">
+
+            <form action="/meal/add" method="POST">
               <div class="mb-3">
-                <label for="name" class="form-label">Meal Name</label>
+                <label for="name" class="form-label">Name</label>
                 <input
                   type="text"
                   class="form-control"
                   id="name"
-                  name="name"
+                  name="Name"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label for="description" class="form-label"
-                  >Meal Description</label
-                >
+                <label for="description" class="form-label">Description</label>
                 <textarea
                   class="form-control"
                   id="description"
-                  name="description"
+                  name="Description"
                   required
                 ></textarea>
               </div>
               <div class="mb-3">
-                <label for="price" class="form-label">Meal Price</label>
+                <label for="price" class="form-label">Price</label>
                 <input
                   type="number"
                   class="form-control"
                   id="price"
-                  name="price"
+                  name="Price"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label for="categoryId" class="form-label">Meal Category</label>
+                <label for="image" class="form-label">Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image"
+                  name="Image"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="categoryId" class="form-label">CategoryID</label>
                 <select
                   class="form-select"
                   id="categoryId"
-                  name="categoryId"
+                  name="CategoryID"
                   required
                 >
                   <option value="">Select Category</option>

@@ -6,6 +6,7 @@ async function main() {
 
 const showAllTheRestorents = async (req, res) => {
   const restaurantes = await prisma.Restaurant.findMany();
+  return restaurantes;
 };
 
 const addNewRestaurant = async (req, res) => {

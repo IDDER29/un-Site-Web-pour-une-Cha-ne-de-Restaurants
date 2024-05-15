@@ -25,14 +25,15 @@ const addNewMeal = async (req, res) => {
       data: {
         Name,
         Description,
-        Price,
+        Price: +Price,
         Image,
-        CategoryID,
-        RestaurantID,
+        CategoryID: 4,
+        RestaurantID: 1,
       },
     });
-    console.log("the restorent was added :", NewMeal);
-    res.res.status(201).json(NewMeal);
+    //console.log("the restorent was added :", NewMeal);
+    //res.res.status(201).json(NewMeal);
+    res.redirect("/home");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong" });

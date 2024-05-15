@@ -7,12 +7,12 @@ async function main() {
 
 const sendEmail = async (req, res) => {
   var transporter = nodemailer.createTransport({
-    host: "smtp.zoho.com",
-    port: 465,
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT),
     secure: true, // or 'STARTTLS'
     auth: {
-      user: "apprenant.apprenant4@talents4starups.com",
-      pass: "upbnU$5q",
+      user: process.env.SMTP_AUTH_USER,
+      pass: process.env.SMTP_AUTH_PASS,
     },
   });
 
