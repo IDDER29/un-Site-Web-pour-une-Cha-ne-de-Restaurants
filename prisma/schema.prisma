@@ -13,50 +13,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// ce site va permettre aux clients de consulter les repas, réserver une table, et qui doit regrouper aussi toutes les informations essentielles pour les futurs clients et les inciter à rendre visite pour goûter sa cuisine !
+
+// Administrateur : Gère l’ensemble du site web et a accès à toutes les données.
+//Gérant du Restaurant : Responsable de la gestion des employés, des réservations et des repas pour son restaurant.
+//Employé : Peut être un chef, un serveur, ou un membre du personnel de nettoyage, avec des permissions limitées selon leur poste.
+
+enum UserRole {
+  CHEF
+  RESTAURANT_MANAGER
+  EMPLOYEE
+  ADMIN
+}
+
 model Restaurant {
-  restaurant_id          String       @id @default(uuid()) @map("restaurant_id")
-  restaurant_name        String       @unique
-  restaurant_address     String
-  restaurant_city        String
-  restaurant_email       String       @unique
-  restaurant_phone       String       @unique
-  restaurant_employees   Employee[]
-  restaurant_meals       Meal[]
-  restaurant_categories  Category[]
-  restaurant_newsletters Newsletter[]
+  RestaurantID Int           @id @unique @default(autoincrement())
+  Name         String        @unique
+  Address      String
+  Phone        String        @unique
+  Email        String        @unique
+  Image        String?
+  Employees    Employee[]
+  Meals        Meal[]
+  Reservations Reservation[]
+  Newsletters  Newsletter[]
 }
 
 model Employee {
-  employeeId   String     @id @default(uuid()) @map("employee_id")
-  name         String
-  position     String
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
-}
-
-model Meal {
-  mealId       String      @id @default(uuid()) @map("meal_id")
-  name         String
-  description  String?
-  price        Float
-  categoryId   String
-  category     Category    @relation(fields: [categoryId], references: [categoryId])
-  restaurantId String?
-  restaurant   Restaurant? @relation(fields: [restaurantId], references: [restaurant_id])
+  EmployeeID   Int        @id @unique @default(autoincrement())
+  FirstName    String
+  LastName     String
+  Image        String?
+  Role         UserRole   @default(EMPLOYEE)
+  RestaurantID Int
+  Restaurant   Restaurant @relation(fields: [RestaurantID], references: [RestaurantID])
 }
 
 model Category {
-  categoryId   String     @id @default(uuid()) @map("category_id")
-  name         String
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
-  Meal         Meal[]
+  CategoryID Int     @id @unique @default(autoincrement())
+  Name       String  @unique
+  Image      String? @unique
+  Meals      Meal[]
+}
+
+model Meal {
+  MealID       Int        @id @unique @default(autoincrement())
+  Name         String     @unique
+  Description  String
+  Price        Float
+  Image        String     @unique
+  CategoryID   Int
+  RestaurantID Int
+  Category     Category   @relation(fields: [CategoryID], references: [CategoryID])
+  Restaurant   Restaurant @relation(fields: [RestaurantID], references: [RestaurantID])
+}
+
+model Reservation {
+  ReservationID  Int        @id @unique @default(autoincrement())
+  ClientID       Int
+  RestaurantID   Int
+  DateTime       DateTime   @default(now())
+  NumberOfPeople Int
+  Client         Client     @relation(fields: [ClientID], references: [ClientID])
+  Restaurant     Restaurant @relation(fields: [RestaurantID], references: [RestaurantID])
+}
+
+model Client {
+  ClientID     Int           @id @unique @default(autoincrement())
+  FirstName    String
+  LastName     String
+  Phone        String        @unique
+  Email        String        @unique
+  Image        String?
+  Reservations Reservation[]
+  Newsletters  Newsletter[]
 }
 
 model Newsletter {
-  newsletterId String     @id @default(uuid()) @map("newsletter_id")
-  email        String     @unique
-  subscribedAt DateTime   @default(now())
-  restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [restaurant_id])
+  NewsletterID           Int         @id @unique @default(autoincrement())
+  Email                  String      @unique
+  SubscriptionDate       DateTime    @default(now())
+  ClientID               Int?
+  Client                 Client?     @relation(fields: [ClientID], references: [ClientID])
+  Restaurant             Restaurant? @relation(fields: [restaurantRestaurantID], references: [RestaurantID])
+  restaurantRestaurantID Int?
 }
