@@ -7,7 +7,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-/*
+
+const logPath = "./request_logs.txt";
+
 app.use(async (req, res, next) => {
   const logEntry = `Time: ${new Date().toISOString()}
   IP Address: ${req.ip}
@@ -15,19 +17,24 @@ app.use(async (req, res, next) => {
   Machine Architecture: ${os.arch()}
   Method: ${req.method}
   URL: ${req.originalUrl}
-  Headers: ${JSON.stringify(req.headers)}
+  Headers: ${JSON.stringify(Object.keys(req.headers))}
   Body: ${JSON.stringify(req.body)}
   -------------------------
   `;
 
   try {
-    await fs.appendFile("request_logs.txt", logEntry);
+    await new Promise((resolve, reject) => {
+      fs.appendFile(logPath, logEntry, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   } catch (error) {
     console.error("Error writing to log file:", error);
   }
 
   next();
-});*/
+});
 
 // (Home, About, contact, les repas, envoyer un email, ajouter un repas);
 

@@ -6,7 +6,8 @@ async function main() {
 
 const showAllTheCategories = async (req, res) => {
   const categories = await prisma.Category.findMany();
-  res.status(200).json(categories);
+  //res.status(200).json(categories);
+  return categories;
 };
 
 const addNewCategory = async (req, res) => {

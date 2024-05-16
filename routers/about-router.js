@@ -1,8 +1,7 @@
 const express = require("express");
 const aboutRouter = express.Router();
+const { renderTheAboutPage } = require("../controllers/about-controler");
 
-aboutRouter.get("/", async (req, res) => {
-  res.render("about");
-});
+aboutRouter.get("/", renderTheAboutPage);
 
 module.exports = aboutRouter;

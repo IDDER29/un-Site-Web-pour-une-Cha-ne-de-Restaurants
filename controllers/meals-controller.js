@@ -1,5 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const {
+  showAllTheRestorents,
+  addNewRestaurant,
+} = require("./restaurants-controler");
+const { showAllTheCategories } = require("./category-controler");
+
 async function main() {
   // Render templates
 }
@@ -14,26 +20,32 @@ const showAllTheMelas = async (req, res) => {
 };
 
 const showTheAddMealForm = async (req, res) => {
-  res.render("addNewMeal", { categories: ["hi", "how are you"] });
+  const restaurants = await showAllTheRestorents();
+  const Categorys = await showAllTheCategories();
+  const restaurant = restaurants[0];
+  res.render("addNewMeal", {
+    Categorys,
+    restaurant,
+  });
 };
 
 const addNewMeal = async (req, res) => {
   try {
-    const { Name, Description, Price, Image, CategoryID, RestaurantID } =
+    const { Name, Description, Price, CategoryID, RestaurantID } =
       await req.body;
+    const img = "img/" + req.file.filename;
+
     const NewMeal = await prisma.Meal.create({
       data: {
         Name,
         Description,
         Price: +Price,
-        Image,
-        CategoryID: 4,
+        Image: img,
+        CategoryID: +CategoryID,
         RestaurantID: 1,
       },
     });
-    //console.log("the restorent was added :", NewMeal);
-    //res.res.status(201).json(NewMeal);
-    res.redirect("/home");
+    res.redirect("/meal");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong" });

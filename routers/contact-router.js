@@ -1,8 +1,7 @@
 const express = require("express");
 const contactRouter = express.Router();
+const { renderTheContactPage } = require("../controllers/contact-controler");
 
-contactRouter.get("/", async (req, res) => {
-  res.render("contact");
-});
+contactRouter.get("/", renderTheContactPage);
 
 module.exports = contactRouter;
